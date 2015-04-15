@@ -87,6 +87,7 @@ void readFromFile(){
         ++ i;
     }
     Nrec = i - 1; // 
+    ifs.close();
 }
 
 void saveToFile(){
@@ -96,6 +97,7 @@ void saveToFile(){
         ofs << marks[i] << ' ';
         ++ i;
     }
+    ofs.close();
 }
 
 void record(){
