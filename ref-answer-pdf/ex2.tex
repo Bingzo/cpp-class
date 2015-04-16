@@ -1,0 +1,540 @@
+%\documentclass[aps,twocolumn,prb,superscriptaddress]{revtex4}     % for final submission
+%\documentclass[aps,showpacs,prb]{revtex4}
+\documentclass[14pt,aps,prb]{revtex4}
+%\documentclass[12pt]{article}
+
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{bm}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{multirow}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{xcolor}
+
+ \usepackage{ctex}
+
+\begin{document}
+\begin{spacing}{1.5}
+
+\title{C++ 第二次实验参考答案}
+\author{周兵}
+
+\date{\today}% It is always \today, today,
+             %  but any date may be explicitly specified
+\maketitle
+
+\lstset{
+    language=C++,
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    prebreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+    frame=lines,
+    showtabs=false,
+    showspaces=false,
+    showstringspaces=false,
+    keywordstyle=\color{red}\bfseries,
+    stringstyle=\color{green!50!black},
+    commentstyle=\color{gray}\itshape,
+%    numbers=left,
+    captionpos=t,
+    escapeinside={\%*}{*)}
+}
+
+\textcolor{red}{注：练习时，代码一定要对得很整齐。这个习惯一定要养成。}
+
+\textcolor{blue}{人民币那题很不用数组的话只能分前四位后四位穷举，比较繁琐；此参考答案中使用了二维数组。}
+
+1、输入一个数，判断它的奇偶性后输出结果。
+\begin{lstlisting}[language=C++]
+//if else
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+int main(){
+    int n;
+    cout << "Pleased input a integer: ";
+    cin >> n;
+    if( 0 == n % 2 ){
+        cout << "Even number." << endl;
+    }
+    else{
+        cout << "Odd number." << endl;
+    }
+	
+    return 0;
+}
+
+// ? :
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+int main(){
+    int n;
+    cout << "Pleased input a integer: ";
+    cin >> n;
+    n % 2 == 0 ? cout << "Even number." : cout << "Odd number.";
+    cout << endl;
+	
+    return 0;
+}
+\end{lstlisting}
+
+2、编程求一元二次方程$ax^2+bx+c=0$的根。包括以下判断和结果，若输入$a=0$,给出提示；$\Delta=b^2-4ac $,若$\Delta>0$,输出两个不等的实根；
+\begin{lstlisting}[language=C++]
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+int main(){
+    int a, b, c;
+    cout << "Please input three integer parameters for the equation(a, b, c): ";
+    cin >> a >> b >> c;
+    int delta = b*b - 4*a*c;
+    double x1, x2;
+
+    if( 0 == a ){
+        cout << "Illegal input, a can't be zero." << endl;
+        return -1;
+    }
+    else{
+        if( 0 == delta ){
+            x1 = x2 = -0.5*b/a;
+            cout << " Equation has the same 2 roots: " << endl;
+            cout << '\t' << x1 << '\t' << x2 << endl;
+        }
+        else if( delta > 0 ){
+            x1 = 0.25/a * ( -b + sqrt( (double)delta ) );
+            x2 = 0.25/a * ( -b - sqrt( (double)delta ) );
+            cout << " Equation has 2 different roots: " << endl;
+            cout << '\t' << x1 << '\t' << x2 << endl;
+        }
+        else{
+            double real, imag;
+            real = 0.25/a * ( -b );
+            imag = 0.25/a * sqrt( -(double)delta );
+            cout << " Equation has 2 imaginary roots: " << endl;
+            cout << '\t' << real << '+' << imag << 'i';
+            cout << '\t' << real << '-' << imag << 'i' << endl;
+        }
+    }
+
+    return 0;
+    
+output:
+Please input three integer parameters for the equation(a, b, c): 1 2 1
+ Equation has the same 2 roots:
+        -1      -1
+Please input three integer parameters for the equation(a, b, c): 1 2 3
+ Equation has 2 imaginary roots:
+        -0.5+0.707107i  -0.5-0.707107i
+}
+\end{lstlisting}
+
+3、编写程序：输入一门课程的成绩，若高于90分，输出“A  grade ”；若高于80分而低于90分，输出“B grade ”；若高于70分而低于80分，输出“C  grade ”；若高于60分而低于70分，输出“D  grade ”；否则输出“Not passed ”。
+\begin{lstlisting}[language=C++]
+//if else
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+int main(){
+    int mark;
+    cout << "Please input the mark (integer, 0~100): ";
+    cin >> mark;
+
+    if( mark >= 90 ){
+        cout << "A grade" << endl;
+    }
+    else if( mark >= 80 ){
+        cout << "B grade" << endl;
+    }
+    else if( mark >=70 ){
+        cout << "C grade" << endl;
+    }
+    else if( mark >= 60 ){
+        cout << "D grade" << endl;
+    }
+    else{
+        cout << "Not passed" << endl;
+    }
+
+    return 0;
+}
+
+//switch case
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+int main(){
+    int mark;
+    cout << "Please input the mark (integer, 0~100): ";
+    cin >> mark;
+
+    mark /= 10;
+
+    switch( mark ){
+    case 9:
+        cout << "A grade" << endl;
+        break;
+    case 8:
+        cout << "B grade" << endl;
+        break;
+    case 7:
+        cout << "C grade" << endl;
+        break;
+    case 6:
+        cout << "D grade" << endl;
+        break;
+    default:
+        cout << "Not passed" << endl;
+    }
+
+    return 0;
+}
+
+// array
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+int main(){
+    int mark;
+    cout << "Please input the mark (integer, 0~100): ";
+    cin >> mark;
+
+    mark /= 10;
+
+    char grade[4] = { 'A', 'B', 'C', 'D' };
+    if( mark > 5 )
+        cout << grade[9-mark] << " grade" << endl;
+    else
+        cout << "Not passed" << endl;
+
+    return 0;
+}
+\end{lstlisting}
+
+4、编写程序： 输入一个数，判断其是否是3或7的倍数，可分为4种情况输出。
+（1） 是3的倍数，但不是7的倍数。 
+（2） 不是3的倍数，是7的倍数。
+（3） 是3的倍数，也是7的倍数。 
+（4） 既不是3的被数，也不是7的倍数。
+\begin{lstlisting}[language=C++]
+// if else
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+int main(){
+    int num;
+    cout << "Please input a number (integer): ";
+    cin >> num;
+
+    if( 0 == num%3 && 0 != num%7 ){
+        cout << "是3的倍数，但不是7的倍数" << endl;
+    }
+    else if( 0 != num%3 && 0 == num%7 ){
+        cout << "不是3的倍数，是7的倍数" << endl;
+    }
+    else if( 0 == num%3 && 0 == num%7 ){
+        cout << "是3的倍数，也是7的倍数" << endl;
+    }
+    else if( 0 != num%3 && 0 != num%7 ){
+        cout << "既不是3的被数，也不是7的倍数" << endl;
+    }
+    return 0;
+}
+
+//
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+int main(){
+    int num;
+    cout << "Please input a number (integer): ";
+    cin >> num;
+
+    if( 0 == num%3 ){
+        if(  0 == num%7 )
+            cout << "是3的倍数，是7的倍数" << endl;
+        else
+            cout << "是3的倍数，但不是7的倍数" << endl;
+    }
+    else{
+        if(  0 == num%7 )
+            cout << "不是3的倍数，是7的倍数" << endl;
+        else
+            cout << "既不是3的倍数，也不是7的倍数" << endl;
+    }
+    return 0;
+}
+\end{lstlisting}
+
+1、输入三个数字a,b,c，
+运用if-else语句分别判断a，b，c的大小。
+\begin{lstlisting}[language=C++]
+// if else
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+int main(){
+    int a, b, c;
+    cout << "Please input three integer numbers (a, b, c): ";
+    cin >> a >> b >> c;
+
+    int max;
+    int middle;
+    int min;
+
+    if( a > b && a > c ){
+        max = a;
+    }
+    else if ( b > c ){
+        max = b;
+    }
+    else{
+        max = c;
+    }
+
+    if( a < b && a < c ){
+        min = a;
+    }
+    else if ( b < c ){
+        min = b;
+    }
+    else{
+        min = c;
+    }
+
+    if( a < max && a > min ){
+        middle = a;
+    }
+    else if( b < max && b > min ){
+        middle = b;
+    }
+    else{
+        middle = c;
+    }
+    cout << '\t' << max << " > " << middle << " > " << min << endl;
+}
+
+output:
+Please input three integer numbers (a, b, c): 1 3 2
+        3 > 2 > 1
+\end{lstlisting}
+
+2、运用switch语句分三种情况，运用while语句输入60次选择，最后加和，输出结果票数。
+\begin{lstlisting}[language=C++]
+// switch case
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+int main(){
+    int a, b, c;
+    a = b = c = 0;
+
+    cout << "Polling..." << endl;
+    for( int i = 0; i < 30; i ++ ){
+        for( int j = 0; j < 2; j ++ ){
+            int poll = rand()%3 + 1;
+            switch( poll ){
+            case 1:
+                ++ a;
+                break;
+            case 2:
+                ++ b;
+                break;
+            case 3:
+                ++ c;
+                break;
+            default:
+                cout << "Illegal input. Negnected." << endl;
+            }
+        }
+    }
+    cout << " The votes are: " << endl;
+    cout << '\t' << a << '\t' << b << '\t' << c << endl;
+    
+    return 0;
+}
+
+output:
+Polling...
+ The votes are:
+        20      18      22
+\end{lstlisting}
+
+3、输入一个正整数n，运用for语句，输出阶乘结果。
+\begin{lstlisting}[language=C++]
+//long long
+#include <iostream>
+using namespace std;
+
+int main(){
+    int n;
+    cout << "Input n (integer, <= 20): ";
+    cin >> n;
+
+    long long fp = 1;
+    int i = n;
+    while( i > 0 ){
+        fp *= i;
+        -- i;
+    }
+
+    cout << n << "! = " << fp << endl;
+    
+    return 0;
+}
+
+output:
+Input n (integer, <= 20): 20
+20! = 2432902008176640000
+\end{lstlisting}
+
+4、输入年份，月份，日期，运用if-else语句判断是否为闰年，闰年二月份为28天，运用for语句算出天数是本年第几天，输出结果。
+\begin{lstlisting}[language=C++]
+#include <iostream>
+using namespace std;
+
+int main(){
+    int year, month, day;
+    cout << "Input the date(year month day): ";
+    cin >> year >> month >> day;
+
+    int isLeap = 0;
+    if( ( 0 == year % 4 && 0 != year %100 ) || 0 == year %400 ){
+        isLeap = 1;
+        cout << "Leap year." << endl;
+    }
+
+    int dayspermonth[12] = { 31, 0, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+    isLeap ? dayspermonth[1]= 29 : dayspermonth[1]= 28;
+
+    int thisday = 0;
+    for( int i = 0; i < month - 1; i ++ ){
+        thisday += dayspermonth[i];
+    }
+    thisday += day;
+
+    cout << "This is Day " << thisday << '.' << endl;
+    
+    return 0;
+}
+\end{lstlisting}
+
+5、输入一个整数（位数不超过9位）代表一个人民币值（单位为元），请转换成财务要求的大写格式。如23108元，转换后变成“贰万叁仟壹佰零捌元”。200101元，转换后变成“贰拾万零壹佰零壹元”。
+\begin{lstlisting}[language=C++]
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+int main()
+{
+	char *one2ten = "零壹贰叁肆伍陆柒捌玖";
+    char *units = "萬仟佰拾元";
+    
+    char one2ten_index[10][3];    // 零壹贰叁肆伍陆柒捌玖
+    for( int i = 0; i < 10; i ++ ){
+        for( int j = 0; j < 2; j ++ ){
+            one2ten_index[i][j] = one2ten[i*2+j];
+        }
+        one2ten_index[i][2] = '\0';
+        //cout << one2ten_index[i] << endl;
+    }
+
+    char units_index_0[5][3];    // 萬仟佰拾
+    for( int i = 0; i < 5; i ++ ){
+        for( int j = 0; j < 2; j ++ ){
+            units_index_0[i][j] = units[i*2+j];
+        }
+        units_index_0[i][2] = '\0';
+        //cout << units_index_0[i] << endl;
+    }
+
+    int money;
+    cout << "输入一个小于9位的整数: ";
+    cin >> money;
+    if( money <=0 || money >= 1e8 ){
+        cout << "输入错误" << endl;
+        return -1;
+    }
+
+    int N = 8;
+    while( 0 == money / (int)pow( 10, N) ){
+        -- N;
+    }
+    ///++ N; // 获得输入数的位数
+
+    int tail = money;
+    int inc = N;
+    int head;
+    if( N > 3 ){
+        while( inc > 4 ){
+            head = tail / (int)pow( 10, inc );
+            cout << one2ten_index[head];
+            cout << units_index_0[8 - inc];
+            tail %= (int)pow( 10, inc );
+            -- inc;
+        }
+        head = tail / (int)pow( 10, inc );
+        cout << one2ten_index[head];
+        cout << units_index_0[0];
+        tail %= (int)pow( 10, inc );
+        -- inc;
+    }
+    while( inc >= 0 ){
+        head = tail / (int)pow( 10, inc );
+        cout << one2ten_index[head];
+        cout << units_index_0[4-inc];
+        tail %= (int)pow( 10, inc );
+        -- inc;
+    }
+    
+    cout << endl;
+
+    return 0;
+}
+\end{lstlisting}
+
+6、编写程序计算y=1-1/2+1/3-1/4+...+1/n
+\begin{lstlisting}[language=C++]
+#include <iostream>
+using namespace std;
+
+int main(){
+    int n;
+    cout << "Input n (integer, > 0): ";
+    cin >> n;
+
+    double sum = 1.0;
+    int p = -1;
+    for( int i = 1; i < n; i ++){
+        sum += 1.0 * p / ( i + 1.0 );
+        p = -p;
+    }
+    cout << "y = " << sum << endl;
+    
+    return 0;
+}
+\end{lstlisting}
+
+%\begin{figure}
+  % Requires \usepackage{graphicx}
+%  \includegraphics[width=0.5\textwidth]{figures/exec_time.png}\\
+%  \caption{Comparison of the execution time of LAMMPS using the rhodopsin protein benchmark (2048000
+%atoms) on XCmaster, HPCx and Blue Gene CO and VN modes.}\label{fig:exec_time}
+%\end{figure}
+
+\end{spacing}
+\end{document}
+%
+% ****** End of file apssamp.tex ******
